@@ -39,6 +39,7 @@ if [ "$1" == "init" ]; then
   for ns in zhone aeo-zhone; do
     kubectl create ns $ns || true
     kubectl create -n $ns secret docker-registry dzs-secret --docker-server=docker.io --docker-username=dzscloudadmin --docker-password=${token} --docker-email='noreply@zhone.com'
+    kubectl create -n $ns secret docker-registry harbor --docker-server=docker.io --docker-username=dzscloudadmin --docker-password=${token} --docker-email='noreply@zhone.com'
   done
 
   echo creating CRDs...
@@ -47,11 +48,9 @@ if [ "$1" == "init" ]; then
 fi
 
 
-set -e
-
 
   echo install...
-  helm install xtreme ${chart} -f ${values} -f repos.yaml -f storage.yaml
+  helm install xtreme ${chart} -f ${values} -f repos.yaml -f storage.yaml || exit 1
 
   echo waiting for DNS
   HN=""

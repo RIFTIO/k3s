@@ -203,4 +203,17 @@ else
   echo "Helm is not installed. Skipping .bashrc update."
 fi
 echo ""
+
+cat <<EOF >/etc/security/limits.d/zhone.conf
+* soft nofile 16384
+* hard nofile 32768
+root soft nofile 16384
+root hard nofile 32768
+EOF
+
+cat <<EOF >/etc/sysctl.d/zhone.conf
+sysctl fs.inotify.max_user_instances=4096
+sysctl user.max_inotify_instances=4096
+EOF
+
 print_info "Installation complete! Reboot may be required for all changes to take effect."
