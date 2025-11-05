@@ -57,9 +57,9 @@ fi
   fqdn=false
   while [ -z "$HN" ]; do
       sleep 1
-      HN=$(kubectl get -n jlm svc/xtreme-haproxy-ingress -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+      HN=$(kubectl get -n zhone svc/xtreme-haproxy-ingress -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
       if [ -z "$HN" ]; then
-        HN=$(kubectl get -n jlm svc/xtreme-haproxy-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+        HN=$(kubectl get -n zhone svc/xtreme-haproxy-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
       else
         fqdn=true
       fi
@@ -73,7 +73,7 @@ if $fqdn; then
   echo HOSTNAME is $HN and is resolving
 fi
 
-while ! curl -kv https://$HN; do
+while ! curl -kv https://$HN >/dev/null 2>&1; do
   echo waiting for service
   sleep 1
 done
@@ -83,4 +83,3 @@ while curl -kv https://$HN 2>&1 | grep 'HTTP/2 503'; do
   sleep 1
 done
 
-echo HOSTNAME/IP is $HN
