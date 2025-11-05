@@ -44,6 +44,17 @@ fi
 
 print_info "Detected OS: $OS $VERSION"
 
+#check DNS
+if ! host www.google.com; then
+    print_error "DNS appears to be misconfigured....attempting fix"
+    device=$(ip r s  | awk '/default via/ { print $5 }')
+    resolvectl dns $device 8.8.8.8
+fi
+if ! host www.google.com; then
+    print_error "DNS appears to be misconfigured. Please repair and re-run this script"
+    exit 1
+fi
+
 # Update system packages
 print_info "Updating system packages...$OS"
 case $OS in
@@ -203,6 +214,8 @@ else
   echo "Helm is not installed. Skipping .bashrc update."
 fi
 echo ""
+install -d -o ubuntu -g ubuntu /home/ubuntu/.kube
+install -o ubuntu -g ubuntu -m 6000 /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/kubeconfig
 
 cat <<EOF >/etc/security/limits.d/zhone.conf
 * soft nofile 16384
@@ -216,4 +229,4 @@ sysctl fs.inotify.max_user_instances=4096
 sysctl user.max_inotify_instances=4096
 EOF
 
-print_info "Installation complete! Reboot may be required for all changes to take effect."
+print_info "Installation complete! Reboot is required for all changes to take effect."
