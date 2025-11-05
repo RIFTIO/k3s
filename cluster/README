@@ -1,0 +1,46 @@
+The script
+
+install-k3s.sh  - can be run from the using root login with ./install-k3s.sh
+                - it will do the following
+		Checks for root privileges - K3s installation requires root access
+		Detects and updates the OS - Works with Ubuntu, Debian, CentOS, RHEL, Rocky, Alma, and Fedora
+		Configures firewall rules - Opens necessary ports for K3s
+		Disables swap - Required for Kubernetes to function properly
+		Loads kernel modules - Sets up overlay and br_netfilter
+		Configures networking - Sets up sysctl parameters for container networking
+		Installs K3s - Uses the official installation script
+		Verifies installation - Checks if the service is running and nodes are ready
+		Sets up kubectl access - Provides kubeconfig information
+		Installs Helm along with pre-requisites
+		Sets up Helm to access K3s
+
+The directory
+
+hello-world-nginx has this structure
+
+hello-world-nginx/
+├── Chart.yaml
+├── values.yaml
+└── templates/
+    ├── configmap.yaml
+    ├── deployment.yaml
+    └── service.yaml
+
+To deploy this small K3s application use this command
+
+helm install hello-world ./hello-world-nginx
+
+To delete use
+
+helm delete hello-world
+
+If you make any changes to the hello-world-nginx files then you can upgrade the deployment with
+
+helm upgrade hello-world ./hello-world-nginx
+
+Once installed you should be able to viewed with
+
+http://<VM IP>:30080
+http://<Server IP>
+
+

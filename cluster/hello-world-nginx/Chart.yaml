@@ -1,0 +1,9 @@
+# Chart.yaml
+apiVersion: v2
+name: hello-world-nginx
+description: A Helm chart for nginx with custom index.html
+type: application
+version: 0.1.0
+appVersion: "1.0"
+
+---
