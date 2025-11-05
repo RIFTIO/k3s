@@ -2,6 +2,7 @@
 
 
 global:
+  # in most cases, you will need to set these and ingress.externalAddress 
   hostAliases:
   - ip: "10.157.136.200"
     hostnames:
