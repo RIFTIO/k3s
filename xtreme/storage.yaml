@@ -1,0 +1,35 @@
+# this shows how to reset the storage for all pods
+global:
+  pvcmetadata:
+    storageClass: "local-path"
+
+mongodb:
+  mongoStorage:
+    storageClassName: local-path
+
+prometheus:
+  prometheusStorage:
+    storageClassName: local-path
+
+redis:
+  redisStorage:
+    storageClassName: local-path
+
+launchpad:
+  storage:
+    storageClassName: local-path
+
+xsdnc:
+  sdnc-artifactory:
+    sdnc-artifactory-postgresql:
+      artifactorypostgresqlStorage:
+        storageClassName: local-path
+    artifactoryStorage:
+      storageClassName: local-path
+  sdnc-influxdb:
+    influxStorage:
+      storageClassName: local-path
+
+grafana:
+  grafanaStorage:
+    storageClassName: local-path

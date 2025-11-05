@@ -1,0 +1,80 @@
+# Copyright 2025 Zhone
+
+
+global:
+  hostAliases:
+  - ip: "10.157.136.200"
+    hostnames:
+    - "jlm1.lab.dzsi.local"
+  sdncImgtag: 13.3.1.1010254
+  namespace:
+    create: false
+    name: jlm
+
+  ensureResourceQuota: true
+  ingress:
+    externalAddress: jlm1.lab.dzsi.local
+    class:
+      name: haproxy
+      namespaced: false
+      disable: false
+    service:
+      type: LoadBalancer
+
+launchpad:
+  launchpad:
+    appSelector: aeo
+    image:
+      pullPolicy: IfNotPresent
+      tag: 13.3.1.1010260
+    upgradeFrom: 13.3.1.1010260
+  haproxy-ingress:
+    serviceAnnotations:
+      metallb.universe.tf/allow-shared-ip: "dzs-xtreme-key"
+
+  aeo:
+    image:
+      controller:
+        pullPolicy: IfNotPresent
+        tag: 13.3.1.1010260
+      serviceWorker:
+        pullPolicy: IfNotPresent
+        tag: 13.3.1.1010260
+      resourceWorker:
+        pullPolicy: IfNotPresent
+        tag: 13.3.1.1010260
+      tmfServer:
+        pullPolicy: IfNotPresent
+        tag: 13.3.1.1010260
+kafka:
+  extraEnvs:
+  - name: STRIMZI_KUBERNETES_VERSION
+    value: "major=1,minor=33"
+sftp:
+  service:
+    type: LoadBalancer
+    port: 2222
+    annotations:
+      metallb.universe.tf/allow-shared-ip: "dzs-xtreme-key"
+ftp:
+  service:
+    annotations:
+      metallb.universe.tf/allow-shared-ip: "dzs-xtreme-key"
+sdnc:
+  sdnc-netconf-svc:
+    sftp:
+      port: 2222
+  sdnc-config-mgr:
+    sftp:
+      port: 2222
+  sdnc-transportpce:
+    sftp:
+      port: 2222
+  sdnc-file-mgr:
+    createClusterRole: true
+    sftp:
+      port: 2222
+  sdnc-artifactory:
+    service:
+      annotations:
+        metallb.universe.tf/allow-shared-ip: "dzs-xtreme-key"
