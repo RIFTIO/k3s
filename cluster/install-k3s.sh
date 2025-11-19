@@ -49,6 +49,7 @@ if ! host www.google.com; then
     print_error "DNS appears to be misconfigured....attempting fix"
     device=$(ip r s  | awk '/default via/ { print $5 }')
     resolvectl dns $device 8.8.8.8
+    echo "DNS=8.8.8.8" >>/etc/systemd/resolved.conf
 fi
 if ! host www.google.com; then
     print_error "DNS appears to be misconfigured. Please repair and re-run this script"
@@ -189,33 +190,17 @@ print_info "Adding Helm stable repository..."
 helm repo add stable https://charts.helm.sh/stable 2>/dev/null || true
 helm repo update
 
+#move traefik
+kubectl get svc -n kube-system traefik -o json | perl -p -e 's/"port": 80,/"port": 8080,/; s/"port": 443,/"port": 8443,/;'  | kubectl replace -f -
+
 echo ""
 print_info "Helm Information:"
 helm version --short
 
-#!/bin/bash
-
-# Check if Helm is installed
-if command -v helm >/dev/null 2>&1; then
-  echo "Checking Helm params."
-
-  # Define the target line
-  CONFIG_LINE='export KUBECONFIG=/etc/rancher/k3s/k3s.yaml'
-  BASHRC_FILE='~/.bashrc'
-
-  # Check if the line already exists
-  if ! grep -Fxq "$CONFIG_LINE" ~/.bashrc; then
-    echo "$CONFIG_LINE" >> ~/.bashrc
-    echo "KUBECONFIG line added to $BASHRC_FILE"
-  else
-    echo "KUBECONFIG line already present in $BASHRC_FILE"
-  fi
-else
-  echo "Helm is not installed. Skipping .bashrc update."
-fi
 echo ""
 install -d -o ubuntu -g ubuntu /home/ubuntu/.kube
-install -o ubuntu -g ubuntu -m 6000 /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/kubeconfig
+install -o ubuntu -g ubuntu -m 600 /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/kubeconfig
+echo "export KUBECONFIG=/home/ubuntu/.kube/kubeconfig" >>/home/ubuntu/.bashrc
 
 cat <<EOF >/etc/security/limits.d/zhone.conf
 * soft nofile 16384
