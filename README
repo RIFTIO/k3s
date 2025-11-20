@@ -1,6 +1,6 @@
 The script
 
-install-k3s.sh  - can be run from the using root login with ./install-k3s.sh
+install-k3s.sh  - can be run as root 
                 - it will do the following
 		Checks for root privileges - K3s installation requires root access
 		Detects and updates the OS - Works with Ubuntu, Debian, CentOS, RHEL, Rocky, Alma, and Fedora
