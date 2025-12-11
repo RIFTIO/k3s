@@ -123,7 +123,7 @@ mkdir -p /etc/rancher/k3s
 
 # Install K3s
 print_info "Installing K3s..."
-curl -sfL https://get.k3s.io | sh -
+curl -sFL https://get.k3s.io | INSTALL_K3S_EXEC="server" sh -s - --disable-traefik
 
 # Wait for K3s to be ready
 print_info "Waiting for K3s to be ready..."
@@ -190,9 +190,6 @@ print_info "Adding Helm stable repository..."
 helm repo add stable https://charts.helm.sh/stable 2>/dev/null || true
 helm repo update
 
-#move traefik
-kubectl get svc -n kube-system traefik -o json | perl -p -e 's/"port": 80,/"port": 8080,/; s/"port": 443,/"port": 8443,/;'  | kubectl replace -f -
-
 echo ""
 print_info "Helm Information:"
 helm version --short
@@ -200,7 +197,8 @@ helm version --short
 echo ""
 install -d -o ubuntu -g ubuntu /home/ubuntu/.kube
 install -o ubuntu -g ubuntu -m 600 /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/kubeconfig
-echo "export KUBECONFIG=/home/ubuntu/.kube/kubeconfig" >>/home/ubuntu/.bashrc
+install -o ubuntu -g ubuntu -m 600 /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/config
+echo "export KUBECONFIG=/home/ubuntu/.kube/config" >>/home/ubuntu/.bashrc
 
 cat <<EOF >/etc/security/limits.d/zhone.conf
 * soft nofile 16384
