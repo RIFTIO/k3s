@@ -179,14 +179,6 @@ if ! grep -q "alias kubectl='k3s kubectl'" ~/.bashrc; then
     print_info "Added kubectl alias to ~/.bashrc"
 fi
 
-# Initialize Helm (add stable repo)
-print_info "Adding Helm stable repository..."
-helm repo add stable https://charts.helm.sh/stable 2>/dev/null || true
-helm repo update
-
-echo ""
-print_info "Helm Information:"
-helm version --short
 
 echo ""
 install -d -o ubuntu -g ubuntu $HOME/.kube
@@ -224,6 +216,15 @@ else
     print_error "Helm installation failed"
     exit 1
 fi
+
+# Initialize Helm (add stable repo)
+print_info "Adding Helm stable repository..."
+helm repo add stable https://charts.helm.sh/stable 2>/dev/null || true
+helm repo update
+
+echo ""
+print_info "Helm Information:"
+helm version --short
 
 
 print_info "Installation complete! Reboot is required for all changes to take effect."
