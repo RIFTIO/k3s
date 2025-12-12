@@ -195,10 +195,10 @@ print_info "Helm Information:"
 helm version --short
 
 echo ""
-install -d -o ubuntu -g ubuntu /home/ubuntu/.kube
-install -o ubuntu -g ubuntu -m 600 /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/kubeconfig
-install -o ubuntu -g ubuntu -m 600 /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/config
-echo "export KUBECONFIG=/home/ubuntu/.kube/config" >>/home/ubuntu/.bashrc
+install -d -o ubuntu -g ubuntu $HOME/.kube
+install -o ubuntu -g ubuntu -m 600 /etc/rancher/k3s/k3s.yaml $HOME/.kube/kubeconfig
+install -o ubuntu -g ubuntu -m 600 /etc/rancher/k3s/k3s.yaml $HOME/.kube/config
+echo "export KUBECONFIG=$HOME/.kube/config" >>$HOME/.bashrc
 
 cat <<EOF >/etc/security/limits.d/zhone.conf
 * soft nofile 16384
@@ -215,7 +215,7 @@ EOF
 # install helm 
 
 export path=$path:/usr/local/bin
-echo 'export path=$path:/usr/local/bin' >> /home/ubuntu/.bash_profile
+echo 'export path=$path:/usr/local/bin' >> $HOME/.bash_profile
 echo 'export path=$path:/usr/local/bin' | sudo tee -a /root/.bashrc
 
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo sh -
