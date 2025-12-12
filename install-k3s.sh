@@ -76,6 +76,8 @@ case $OS in
         ;;
 esac
 
+
+
 # Check and configure firewall
 print_info "Checking firewall configuration..."
 if command -v ufw > /dev/null; then
@@ -91,6 +93,11 @@ elif command -v firewall-cmd > /dev/null; then
     firewall-cmd --permanent --add-port=80/tcp
     firewall-cmd --permanent --add-port=10250/tcp
     firewall-cmd --reload
+fi
+
+if [ $OS == rocky ]; then
+    sudo systemctl stop firewalld.service
+    sudo systemctl disable firewalld.service
 fi
 
 # Disable swap (required for Kubernetes)
