@@ -172,19 +172,6 @@ if ! grep -q "alias kubectl='k3s kubectl'" ~/.bashrc; then
     print_info "Added kubectl alias to ~/.bashrc"
 fi
 
-# Install Helm
-print_info "Installing Helm..."
-curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-
-# Verify Helm installation
-if command -v helm > /dev/null; then
-    print_info "Helm installed successfully!"
-    helm version
-else
-    print_error "Helm installation failed"
-    exit 1
-fi
-
 # Initialize Helm (add stable repo)
 print_info "Adding Helm stable repository..."
 helm repo add stable https://charts.helm.sh/stable 2>/dev/null || true
@@ -218,6 +205,18 @@ export path=$path:/usr/local/bin
 echo 'export path=$path:/usr/local/bin' >> $HOME/.bash_profile
 echo 'export path=$path:/usr/local/bin' | sudo tee -a /root/.bashrc
 
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo sh -
+# Install Helm
+print_info "Installing Helm..."
+curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo bash -
+
+# Verify Helm installation
+if command -v helm > /dev/null; then
+    print_info "Helm installed successfully!"
+    helm version
+else
+    print_error "Helm installation failed"
+    exit 1
+fi
+
 
 print_info "Installation complete! Reboot is required for all changes to take effect."
