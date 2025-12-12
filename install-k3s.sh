@@ -212,4 +212,12 @@ sysctl fs.inotify.max_user_instances=4096
 sysctl user.max_inotify_instances=4096
 EOF
 
+# install helm 
+
+export path=$path:/usr/local/bin
+echo 'export path=$path:/usr/local/bin' >> /home/ubuntu/.bash_profile
+echo 'export path=$path:/usr/local/bin' | sudo tee -a /root/.bashrc
+
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo sh -
+
 print_info "Installation complete! Reboot is required for all changes to take effect."
