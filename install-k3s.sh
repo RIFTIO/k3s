@@ -180,11 +180,16 @@ if ! grep -q "alias kubectl='k3s kubectl'" ~/.bashrc; then
 fi
 
 
-echo ""
-install -d -o ubuntu -g ubuntu $HOME/.kube
-install -o ubuntu -g ubuntu -m 600 /etc/rancher/k3s/k3s.yaml $HOME/.kube/kubeconfig
-install -o ubuntu -g ubuntu -m 600 /etc/rancher/k3s/k3s.yaml $HOME/.kube/config
-echo "export KUBECONFIG=$HOME/.kube/config" >>$HOME/.bashrc
+if [ -n "$SUDO_USER" ]; then
+    echo enabling kubectl and helm for user $SUDO_USER
+
+    his_home=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+    install -d -o $SUDO_USER -g $SUDO_USER ${his_home}/.kube
+    install -o $SUDO_USER -g $SUDO_USER -m 600 /etc/rancher/k3s/k3s.yaml ${his_home}/.kube/kubeconfig
+    install -o $SUDO_USER -g $SUDO_USER -m 600 /etc/rancher/k3s/k3s.yaml ${his_home}/.kube/config
+    echo "export KUBECONFIG=${his_home}/.kube/config" >>${his_home}/.bashrc
+    echo 'export path=$path:/usr/local/bin' >> ${his_home}/.bashrc
+fi
 
 cat <<EOF >/etc/security/limits.d/zhone.conf
 * soft nofile 16384
@@ -201,10 +206,7 @@ EOF
 # install helm 
 
 export path=$path:/usr/local/bin
-echo 'export path=$path:/usr/local/bin' >> $HOME/.bash_profile
-echo 'export path=$path:/usr/local/bin' | sudo tee -a /root/.bashrc
-
-# Install Helm
+echo 'export path=$path:/usr/local/bin' >>/root/.bashrc
 print_info "Installing Helm..."
 curl -sL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo bash -
 
