@@ -130,7 +130,7 @@ mkdir -p /etc/rancher/k3s
 
 # Install K3s
 print_info "Installing K3s..."
-curl -sFL https://get.k3s.io | INSTALL_K3S_EXEC="server" sh -s - --disable-traefik
+curl -sL https://get.k3s.io | INSTALL_K3S_EXEC="server" sh -s - --disable-traefik
 
 # Wait for K3s to be ready
 print_info "Waiting for K3s to be ready..."
@@ -206,7 +206,7 @@ echo 'export path=$path:/usr/local/bin' | sudo tee -a /root/.bashrc
 
 # Install Helm
 print_info "Installing Helm..."
-curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo bash -
+curl -sL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo bash -
 
 # Verify Helm installation
 if command -v helm > /dev/null; then
