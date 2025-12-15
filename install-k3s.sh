@@ -130,7 +130,7 @@ mkdir -p /etc/rancher/k3s
 
 # Install K3s
 print_info "Installing K3s..."
-curl -sL https://get.k3s.io | INSTALL_K3S_EXEC="server" sh -s - --disable-traefik
+curl -sL https://get.k3s.io | INSTALL_K3S_EXEC="server" sh -s - --disable=traefik
 
 # Wait for K3s to be ready
 print_info "Waiting for K3s to be ready..."
