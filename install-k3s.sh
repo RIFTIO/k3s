@@ -199,8 +199,8 @@ root hard nofile 32768
 EOF
 
 cat <<EOF >/etc/sysctl.d/zhone.conf
-sysctl fs.inotify.max_user_instances=4096
-sysctl user.max_inotify_instances=4096
+fs.inotify.max_user_instances=4096
+user.max_inotify_instances=4096
 EOF
 
 # install helm 
