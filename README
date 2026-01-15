@@ -18,13 +18,13 @@ The directory
 
 hello-world-nginx has this structure
 
-hello-world-nginx/
-├── Chart.yaml
-├── values.yaml
-└── templates/
-    ├── configmap.yaml
-    ├── deployment.yaml
-    └── service.yaml
+    hello-world-nginx/
+    ├── Chart.yaml
+    ├── values.yaml
+    └── templates/
+        ├── configmap.yaml
+        ├── deployment.yaml
+        └── service.yaml
 
 To deploy this small K3s application use this command
 
