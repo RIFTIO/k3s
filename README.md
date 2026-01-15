@@ -40,7 +40,7 @@ helm upgrade hello-world ./hello-world-nginx
 
 Once installed you should be able to viewed with
 
-http://<VM IP>:30080
-http://<Server IP>
+    http://<VM IP>:30080
+    http://<Server IP>
 
 
