@@ -1,18 +1,17 @@
 The script
 
-install-k3s.sh  - can be run as root 
-                - it will do the following
-		Checks for root privileges - K3s installation requires root access
-		Detects and updates the OS - Works with Ubuntu, Debian, CentOS, RHEL, Rocky, Alma, and Fedora
-		Configures firewall rules - Opens necessary ports for K3s
-		Disables swap - Required for Kubernetes to function properly
-		Loads kernel modules - Sets up overlay and br_netfilter
-		Configures networking - Sets up sysctl parameters for container networking
-		Installs K3s - Uses the official installation script
-		Verifies installation - Checks if the service is running and nodes are ready
-		Sets up kubectl access - Provides kubeconfig information
-		Installs Helm along with pre-requisites
-		Sets up Helm to access K3s
+install-k3s.sh  - can be run as root  and it will do the following
+-	Checks for root privileges - K3s installation requires root access
+-	Detects and updates the OS - Works with Ubuntu, Debian, CentOS, RHEL, Rocky, Alma, and Fedora
+-	Configures firewall rules - Opens necessary ports for K3s
+-	Disables swap - Required for Kubernetes to function properly
+-	Loads kernel modules - Sets up overlay and br_netfilter
+-	Configures networking - Sets up sysctl parameters for container networking
+-	Installs K3s - Uses the official installation script
+-	Verifies installation - Checks if the service is running and nodes are ready
+-	Sets up kubectl access - Provides kubeconfig information
+-	Installs Helm along with pre-requisites
+-	Sets up Helm to access K3s
 
 The directory
 
